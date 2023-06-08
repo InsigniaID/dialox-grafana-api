@@ -61,7 +61,7 @@ def index():
 @app.route('/api/v1/generate-dashboard', methods=['POST'])
 def generate():
     data = request.get_json()
-    workspace = data['workspace']
+    workspace = data['workspaceId']
     get_uid = base64.urlsafe_b64encode(hashlib.md5(os.urandom(128)).digest())[:9].decode("utf-8")
     dashboard_uuid = str(uuid.uuid4())
     panels = get_panels(workspace)
