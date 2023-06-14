@@ -84,7 +84,7 @@
       {
         "datasource": {
           "type": "postgres",
-          "uid": "MVFHlewVk"
+          "uid": "a8676920-2add-495d-86f3-294fc7ac0f17"
         },
         "fieldConfig": {
           "defaults": {
@@ -139,7 +139,7 @@
           {
             "datasource": {
               "type": "postgres",
-              "uid": "MVFHlewVk"
+              "uid": "a8676920-2add-495d-86f3-294fc7ac0f17"
             },
             "editorMode": "code",
             "format": "table",
@@ -171,7 +171,7 @@
       {
         "datasource": {
           "type": "postgres",
-          "uid": "MVFHlewVk"
+          "uid": "a8676920-2add-495d-86f3-294fc7ac0f17"
         },
         "fieldConfig": {
           "defaults": {
@@ -250,7 +250,7 @@
           {
             "datasource": {
               "type": "postgres",
-              "uid": "MVFHlewVk"
+              "uid": "a8676920-2add-495d-86f3-294fc7ac0f17"
             },
             "editorMode": "code",
             "format": "table",
@@ -295,7 +295,7 @@
       {
         "datasource": {
           "type": "postgres",
-          "uid": "MVFHlewVk"
+          "uid": "a8676920-2add-495d-86f3-294fc7ac0f17"
         },
         "fieldConfig": {
           "defaults": {
@@ -346,7 +346,7 @@
           {
             "datasource": {
               "type": "postgres",
-              "uid": "MVFHlewVk"
+              "uid": "a8676920-2add-495d-86f3-294fc7ac0f17"
             },
             "editorMode": "code",
             "format": "table",
@@ -378,7 +378,7 @@
       {
         "datasource": {
           "type": "postgres",
-          "uid": "MVFHlewVk"
+          "uid": "a8676920-2add-495d-86f3-294fc7ac0f17"
         },
         "fieldConfig": {
           "defaults": {
@@ -457,7 +457,7 @@
           {
             "datasource": {
               "type": "postgres",
-              "uid": "MVFHlewVk"
+              "uid": "a8676920-2add-495d-86f3-294fc7ac0f17"
             },
             "editorMode": "code",
             "format": "table",
@@ -489,7 +489,7 @@
       {
         "datasource": {
           "type": "postgres",
-          "uid": "MVFHlewVk"
+          "uid": "a8676920-2add-495d-86f3-294fc7ac0f17"
         },
         "fieldConfig": {
           "defaults": {
@@ -568,7 +568,7 @@
           {
             "datasource": {
               "type": "postgres",
-              "uid": "MVFHlewVk"
+              "uid": "a8676920-2add-495d-86f3-294fc7ac0f17"
             },
             "editorMode": "code",
             "format": "time_series",
