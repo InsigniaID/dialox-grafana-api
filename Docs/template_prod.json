@@ -1,0 +1,808 @@
+{
+  "meta": {
+    "type": "db",
+    "canSave": true,
+    "canEdit": true,
+    "canAdmin": true,
+    "canStar": true,
+    "canDelete": true,
+    "slug": "workspace-1",
+    "url": "/d/NrJtxd_5k/workspace-1",
+    "expires": "0001-01-01T00:00:00Z",
+    "created": "2023-06-06T14:36:20+07:00",
+    "updated": "2023-06-15T09:13:44+07:00",
+    "updatedBy": "admin",
+    "createdBy": "admin",
+    "version": 10,
+    "hasAcl": false,
+    "isFolder": false,
+    "folderId": 0,
+    "folderUid": "",
+    "folderTitle": "General",
+    "folderUrl": "",
+    "provisioned": false,
+    "provisionedExternalId": "",
+    "annotationsPermissions": {
+      "dashboard": {
+        "canAdd": true,
+        "canEdit": true,
+        "canDelete": true
+      },
+      "organization": {
+        "canAdd": true,
+        "canEdit": true,
+        "canDelete": true
+      }
+    },
+    "publicDashboardAccessToken": "",
+    "publicDashboardUid": "",
+    "publicDashboardEnabled": false
+  },
+  "dashboard": {
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 10,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "e2c724d3-f970-42fa-8fa5-5f0e68f86508"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "filterable": true,
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 15,
+        "options": {
+          "footer": {
+            "countRows": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "showHeader": true,
+          "sortBy": [
+            {
+              "desc": true,
+              "displayName": "time"
+            }
+          ]
+        },
+        "pluginVersion": "9.4.7",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "e2c724d3-f970-42fa-8fa5-5f0e68f86508"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "with cte1 as (\r\n    select * from \"Contact\"\r\n    where \"workspaceId\" = 'workspace-1'\r\n    and channel = 'whatsapp'\r\n),\r\ncte2 as (select *,\r\n     row_number() over (partition by \"workspaceId\" order by \"createdAt\" desc) as rn\r\nfrom \"Message\" where \"senderType\" = 'user' and \"workspaceId\" = 'workspace-1'),\r\ncte3 as (select * from cte2 where rn = 1),\r\ncte4 as (select\r\n       c1.\"phoneNumber\",\r\n       status,\r\n       pricing\r\nfrom \"WhatsappConversation\" wc\r\nleft join cte1 c1 on wc.\"waRecipient\" = c1.\"phoneNumber\"\r\nleft join cte3 c3 on c1.id = c3.\"senderId\"\r\nwhere wc.\"channelId\" in (select \"id\" from \"Channel\" where \"workspaceId\" = 'workspace-1')),\r\n    result as (\r\nselect \"broadcastName\", name, \"phoneNumber\", BD.\"createdAt\", \"templateName\", c4.status, pricing from \"Broadcast\" left join \"BroadcastData\" BD on \"Broadcast\".id = BD.\"broadcastId\"\r\nleft join cte1 c1 using (\"phoneNumber\")\r\nleft join cte4 c4 using (\"phoneNumber\")\r\nwhere \"Broadcast\".\"workspaceId\" = 'workspace-1')\r\nselect \"broadcastName\" as \"Broadcast Name\", name as \"Whatsapp Account\", \"phoneNumber\" as \"Recipients Number\", \"createdAt\" as time, \"templateName\" as \"Message Template\", status as \"Message Last Status\", pricing as \"Source\" from result group by 1,2,3,4,5,6,7",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "Business Initiate",
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "e2c724d3-f970-42fa-8fa5-5f0e68f86508"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "filterable": true,
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 24,
+          "x": 0,
+          "y": 8
+        },
+        "id": 17,
+        "options": {
+          "footer": {
+            "countRows": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "showHeader": true,
+          "sortBy": [
+            {
+              "desc": true,
+              "displayName": "time"
+            }
+          ]
+        },
+        "pluginVersion": "9.4.7",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "e2c724d3-f970-42fa-8fa5-5f0e68f86508"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "with cte1 as (\r\n    select * from \"Contact\"\r\n    where \"workspaceId\" = 'workspace-1'\r\n    and channel = 'whatsapp'\r\n),\r\ncte2 as (select *,\r\n         row_number() over (partition by \"workspaceId\" order by \"createdAt\" desc) as rn\r\n  from \"Message\" where \"senderType\" = 'user' and \"workspaceId\" = 'workspace-1'),\r\ncte3 as (select * from cte2 where rn = 1)\r\nselect wc.\"createdAt\" as time,\r\n       name as \"Whatsapp Account\",\r\n       wc.\"waRecipient\" as \"Recipient Number\",\r\n       \"waOriginType\" as \"Type\",\r\n       status as \"Message Last Status\",\r\n       pricing as \"Source\"\r\nfrom \"WhatsappConversation\" wc\r\nleft join cte1 c1 on wc.\"waRecipient\" = c1.\"phoneNumber\"\r\nleft join cte3 c3 on c1.id = c3.\"senderId\"\r\nwhere wc.\"channelId\" in (select \"id\" from \"Channel\" where \"workspaceId\" = 'workspace-1'\r\norder by 1 desc)",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "All Conversation",
+        "type": "table"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 17
+        },
+        "id": 11,
+        "panels": [],
+        "title": "Billing information",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "e2c724d3-f970-42fa-8fa5-5f0e68f86508"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "currencyIDR"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 24,
+          "x": 0,
+          "y": 18
+        },
+        "id": 6,
+        "options": {
+          "footer": {
+            "countRows": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "showHeader": true
+        },
+        "pluginVersion": "9.4.7",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "e2c724d3-f970-42fa-8fa5-5f0e68f86508"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "select count(*) filter ( where \"waOriginType\" in ('user_initiated', 'service')) * 270.48 +\r\n       count(*) filter ( where \"waOriginType\" = 'marketing' ) * 586.33 +\r\n       count(*) filter ( where \"waOriginType\" = 'utility') * 285.32 +\r\n       count(*) filter ( where \"waOriginType\" = 'authentication') * 427.97 as total_bill,\r\n       count(*) filter ( where \"waOriginType\" in ('user_initiated', 'service')) * 270.48 as bill_service,\r\n       count(*) filter ( where \"waOriginType\" = 'marketing' ) * 586.33 as bill_marketing,\r\n       count(*) filter ( where \"waOriginType\" = 'utility') * 285.32 as bill_utility,\r\n       count(*) filter ( where \"waOriginType\" = 'authentication') * 427.97 as bill_authentication\r\nfrom \"WhatsappConversation\"\r\nwhere \"channelId\" in (select \"id\" from \"Channel\" where \"workspaceId\" = 'workspace-1')\r\n",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "Billing information",
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "e2c724d3-f970-42fa-8fa5-5f0e68f86508"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 100,
+              "gradientMode": "opacity",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "smooth",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "currencyIDR"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 11,
+          "w": 24,
+          "x": 0,
+          "y": 22
+        },
+        "id": 7,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "9.4.7",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "e2c724d3-f970-42fa-8fa5-5f0e68f86508"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "select date_trunc('day', \"createdAt\") as time,\r\n       count(*) filter ( where \"waOriginType\" in ('user_initiated', 'service')) * 270.48 +\r\n       count(*) filter ( where \"waOriginType\" = 'marketing' ) * 586.33 +\r\n       count(*) filter ( where \"waOriginType\" = 'utility') * 285.32 +\r\n       count(*) filter ( where \"waOriginType\" = 'authentication') * 427.97 as total_bill,\r\n       count(*) filter ( where \"waOriginType\" in ('user_initiated', 'service')) * 270.48 as bill_service,\r\n       count(*) filter ( where \"waOriginType\" = 'marketing' ) * 586.33 as bill_marketing,\r\n       count(*) filter ( where \"waOriginType\" = 'utility') * 285.32 as bill_utility,\r\n       count(*) filter ( where \"waOriginType\" = 'authentication') * 427.97 as bill_authentication\r\nfrom \"WhatsappConversation\"\r\nwhere \"channelId\" in (select \"id\" from \"Channel\" where \"workspaceId\" = 'workspace-1')\r\ngroup by 1\r\n",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "Billing information over time",
+        "type": "timeseries"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 33
+        },
+        "id": 13,
+        "panels": [],
+        "title": "Workspace Information",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "e2c724d3-f970-42fa-8fa5-5f0e68f86508"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-GrYlRd"
+            },
+            "mappings": [],
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 24,
+          "x": 0,
+          "y": 34
+        },
+        "id": 9,
+        "options": {
+          "displayMode": "basic",
+          "minVizHeight": 10,
+          "minVizWidth": 0,
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showUnfilled": true
+        },
+        "pluginVersion": "9.4.7",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "e2c724d3-f970-42fa-8fa5-5f0e68f86508"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "select count(*)                                                                                 as \"Number of Broadcast\",\r\n       (select count(*) from \"Conversation\" where \"Conversation\".\"workspaceId\" = 'workspace-1') as \"Number of Conversation Open\",\r\n       (with cte1 as (select \"conversationId\", status, \"senderType\",\r\n         row_number() over (partition by \"conversationId\" order by \"createdAt\" desc) as rn\r\n  from \"Message\" where \"senderType\" = 'user' and \"workspaceId\" = 'workspace-1')\r\nselect count(*) from cte1 where rn = 1) as \"Number of User Reply Broadcast\"\r\n                                                                                                   from \"Broadcast\"\r\nwhere \"workspaceId\" = 'workspace-1'",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "Flow Information",
+        "type": "bargauge"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "e2c724d3-f970-42fa-8fa5-5f0e68f86508"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 100,
+              "gradientMode": "opacity",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "smooth",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 11,
+          "w": 24,
+          "x": 0,
+          "y": 39
+        },
+        "id": 3,
+        "options": {
+          "legend": {
+            "calcs": [
+              "sum"
+            ],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "9.4.7",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "e2c724d3-f970-42fa-8fa5-5f0e68f86508"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "select date_trunc('day', \"createdAt\"), count(*) as \"Total\" from \"Broadcast\" where \"workspaceId\" = 'workspace-1' group by 1",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "Number of Broadcast over time",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "e2c724d3-f970-42fa-8fa5-5f0e68f86508"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 100,
+              "gradientMode": "opacity",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "smooth",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 11,
+          "w": 24,
+          "x": 0,
+          "y": 50
+        },
+        "id": 4,
+        "options": {
+          "legend": {
+            "calcs": [
+              "sum"
+            ],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "9.4.7",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "e2c724d3-f970-42fa-8fa5-5f0e68f86508"
+            },
+            "editorMode": "code",
+            "format": "time_series",
+            "rawQuery": true,
+            "rawSql": "select date_trunc('day', \"createdAt\") as time, count(*) as \"Total\", count(*) filter(where \"senderType\" = 'user') as in, count(*) filter(where \"senderType\" != 'user' ) as out from \"Message\" where \"workspaceId\" = 'workspace-1' group by 1",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "Number of Message over time",
+        "type": "timeseries"
+      }
+    ],
+    "refresh": "",
+    "revision": 1,
+    "schemaVersion": 38,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Workspace-1",
+    "uid": "NrJtxd_5k",
+    "version": 10,
+    "weekStart": ""
+  }
+}
