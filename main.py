@@ -25,9 +25,7 @@ api_key = os.getenv('GRAFANA_API_KEY')
 grafana = GrafanaApi.from_url(
     url=f'http://{grafana_server}', credential=(username, password))
 
-f = open('Docs/template.json')
-dashboard_template = json.load(f)
-f.close()
+
 
 
 def get_dashboard_link(uid, headers):
@@ -43,6 +41,9 @@ def get_dashboard_link(uid, headers):
 
 
 def get_panels(workspace):
+    f = open('Docs/template_prod.json')
+    dashboard_template = json.load(f)
+    f.close()
     panels = dashboard_template['dashboard']['panels']
     for panel in panels:
         try:
