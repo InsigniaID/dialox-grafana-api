@@ -71,7 +71,7 @@
       {
         "datasource": {
           "type": "postgres",
-          "uid": "e2c724d3-f970-42fa-8fa5-5f0e68f86508"
+          "uid": "a8676920-2add-495d-86f3-294fc7ac0f17"
         },
         "fieldConfig": {
           "defaults": {
@@ -125,7 +125,7 @@
           {
             "datasource": {
               "type": "postgres",
-              "uid": "e2c724d3-f970-42fa-8fa5-5f0e68f86508"
+              "uid": "a8676920-2add-495d-86f3-294fc7ac0f17"
             },
             "editorMode": "code",
             "format": "table",
@@ -157,7 +157,7 @@
       {
         "datasource": {
           "type": "postgres",
-          "uid": "e2c724d3-f970-42fa-8fa5-5f0e68f86508"
+          "uid": "a8676920-2add-495d-86f3-294fc7ac0f17"
         },
         "fieldConfig": {
           "defaults": {
@@ -213,7 +213,7 @@
           {
             "datasource": {
               "type": "postgres",
-              "uid": "e2c724d3-f970-42fa-8fa5-5f0e68f86508"
+              "uid": "a8676920-2add-495d-86f3-294fc7ac0f17"
             },
             "editorMode": "code",
             "format": "table",
@@ -258,7 +258,7 @@
       {
         "datasource": {
           "type": "postgres",
-          "uid": "e2c724d3-f970-42fa-8fa5-5f0e68f86508"
+          "uid": "a8676920-2add-495d-86f3-294fc7ac0f17"
         },
         "fieldConfig": {
           "defaults": {
@@ -313,7 +313,7 @@
           {
             "datasource": {
               "type": "postgres",
-              "uid": "e2c724d3-f970-42fa-8fa5-5f0e68f86508"
+              "uid": "a8676920-2add-495d-86f3-294fc7ac0f17"
             },
             "editorMode": "code",
             "format": "table",
@@ -345,7 +345,7 @@
       {
         "datasource": {
           "type": "postgres",
-          "uid": "e2c724d3-f970-42fa-8fa5-5f0e68f86508"
+          "uid": "a8676920-2add-495d-86f3-294fc7ac0f17"
         },
         "fieldConfig": {
           "defaults": {
@@ -424,7 +424,7 @@
           {
             "datasource": {
               "type": "postgres",
-              "uid": "e2c724d3-f970-42fa-8fa5-5f0e68f86508"
+              "uid": "a8676920-2add-495d-86f3-294fc7ac0f17"
             },
             "editorMode": "code",
             "format": "table",
