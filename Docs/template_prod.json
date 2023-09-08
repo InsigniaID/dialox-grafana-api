@@ -6,8 +6,8 @@
     "canAdmin": true,
     "canStar": true,
     "canDelete": true,
-    "slug": "workspace-1",
-    "url": "/d/NrJtxd_5k/workspace-1",
+    "slug": "template-workspace-name",
+    "url": "/d/NrJtxd_5k/template-workspace-name",
     "expires": "0001-01-01T00:00:00Z",
     "created": "2023-06-06T14:36:20+07:00",
     "updated": "2023-09-08T14:44:42+07:00",
@@ -130,7 +130,7 @@
             "editorMode": "code",
             "format": "table",
             "rawQuery": true,
-            "rawSql": "select count(*) filter ( where \"waOriginType\" = 'user_initiated') as user_initiated,\r\n       count(*) filter ( where \"waOriginType\" = 'service') as service,\r\n       count(*) filter ( where \"waOriginType\" = 'marketing' )                   as marketing,\r\n       count(*) filter ( where \"waOriginType\" = 'utility')                      as utility,\r\n       count(*) filter ( where \"waOriginType\" = 'authentication')               as authentication,\r\n       count(*) as \"total_converstation\",\r\n       (select count(distinct id)\r\n        from \"Broadcast\"\r\n        where \"workspaceId\" = 'workspace-1'\r\n          and $__timeFilter(\"Broadcast\".\"createdAt\"))    as total_broadcast\r\nfrom \"WhatsappConversation\"\r\nwhere \"channelId\" in (select \"channelId\"\r\n                      from \"Broadcast\"\r\n                      where \"workspaceId\" = 'workspace-1'\r\n                        and $__timeFilter(\"Broadcast\".\"createdAt\"))\r\nand pricing = 'Paid'\r\nand $__timeFilter(\"createdAt\");",
+            "rawSql": "select count(*) filter ( where \"waOriginType\" = 'user_initiated') as user_initiated,\r\n       count(*) filter ( where \"waOriginType\" = 'service') as service,\r\n       count(*) filter ( where \"waOriginType\" = 'marketing' )                   as marketing,\r\n       count(*) filter ( where \"waOriginType\" = 'utility')                      as utility,\r\n       count(*) filter ( where \"waOriginType\" = 'authentication')               as authentication,\r\n       count(*) as \"total_converstation\",\r\n       (select count(distinct id)\r\n        from \"Broadcast\"\r\n        where \"workspaceId\" = 'template-workspace-name'\r\n          and $__timeFilter(\"Broadcast\".\"createdAt\"))    as total_broadcast\r\nfrom \"WhatsappConversation\"\r\nwhere \"channelId\" in (select \"channelId\"\r\n                      from \"Broadcast\"\r\n                      where \"workspaceId\" = 'template-workspace-name'\r\n                        and $__timeFilter(\"Broadcast\".\"createdAt\"))\r\nand pricing = 'Paid'\r\nand $__timeFilter(\"createdAt\");",
             "refId": "A",
             "sql": {
               "columns": [
@@ -218,7 +218,7 @@
             "editorMode": "code",
             "format": "table",
             "rawQuery": true,
-            "rawSql": "with cte1 as (\r\n    select * from \"Contact\"\r\n    where \"workspaceId\" = 'workspace-1'\r\n    and channel = 'whatsapp'\r\n),\r\ncte2 as (select *,\r\n         row_number() over (partition by \"workspaceId\" order by \"createdAt\" desc) as rn\r\n  from \"Message\" where \"senderType\" = 'user' and \"workspaceId\" = 'workspace-1'),\r\ncte3 as (select * from cte2 where rn = 1)\r\nselect wc.\"createdAt\" as time,\r\n       name as \"Whatsapp Account\",\r\n       wc.\"waRecipient\" as \"Recipient Number\",\r\n       \"waOriginType\" as \"Type\",\r\n       status as \"Message Last Status\",\r\n       pricing as \"Source\"\r\nfrom \"WhatsappConversation\" wc\r\nleft join cte1 c1 on wc.\"waRecipient\" = c1.\"phoneNumber\"\r\nleft join cte3 c3 on c1.id = c3.\"senderId\"\r\nwhere wc.\"channelId\" in (select \"id\" from \"Channel\" where \"workspaceId\" = 'workspace-1'\r\norder by 1 desc) and $__timeFilter(wc.\"createdAt\")\r\norder by 1 desc",
+            "rawSql": "with cte1 as (\r\n    select * from \"Contact\"\r\n    where \"workspaceId\" = 'template-workspace-name'\r\n    and channel = 'whatsapp'\r\n),\r\ncte2 as (select *,\r\n         row_number() over (partition by \"workspaceId\" order by \"createdAt\" desc) as rn\r\n  from \"Message\" where \"senderType\" = 'user' and \"workspaceId\" = 'template-workspace-name'),\r\ncte3 as (select * from cte2 where rn = 1)\r\nselect wc.\"createdAt\" as time,\r\n       name as \"Whatsapp Account\",\r\n       wc.\"waRecipient\" as \"Recipient Number\",\r\n       \"waOriginType\" as \"Type\",\r\n       status as \"Message Last Status\",\r\n       pricing as \"Source\"\r\nfrom \"WhatsappConversation\" wc\r\nleft join cte1 c1 on wc.\"waRecipient\" = c1.\"phoneNumber\"\r\nleft join cte3 c3 on c1.id = c3.\"senderId\"\r\nwhere wc.\"channelId\" in (select \"id\" from \"Channel\" where \"workspaceId\" = 'template-workspace-name'\r\norder by 1 desc) and $__timeFilter(wc.\"createdAt\")\r\norder by 1 desc",
             "refId": "A",
             "sql": {
               "columns": [
@@ -318,7 +318,7 @@
             "editorMode": "code",
             "format": "table",
             "rawQuery": true,
-            "rawSql": "select \r\n       count(*) filter ( where \"waOriginType\" in ('user_initiated', 'service')) * 306 as bill_service,\r\n       count(*) filter ( where \"waOriginType\" = 'marketing' ) * 657 as bill_marketing,\r\n       count(*) filter ( where \"waOriginType\" = 'utility') * 321 as bill_utility,\r\n       count(*) filter ( where \"waOriginType\" = 'authentication') * 460 as bill_authentication,\r\n       count(*) filter ( where \"waOriginType\" in ('user_initiated', 'service')) * 306 +\r\n       count(*) filter ( where \"waOriginType\" = 'marketing' ) * 657 +\r\n       count(*) filter ( where \"waOriginType\" = 'utility') * 321 +\r\n       count(*) filter ( where \"waOriginType\" = 'authentication') * 460 as total_bill\r\nfrom \"WhatsappConversation\"\r\nwhere \"channelId\" in (select \"id\" from \"Channel\" where \"workspaceId\" = 'workspace-1') and $__timeFilter(\"createdAt\")\r\n",
+            "rawSql": "select \r\n       count(*) filter ( where \"waOriginType\" in ('user_initiated', 'service')) * 306 as bill_service,\r\n       count(*) filter ( where \"waOriginType\" = 'marketing' ) * 657 as bill_marketing,\r\n       count(*) filter ( where \"waOriginType\" = 'utility') * 321 as bill_utility,\r\n       count(*) filter ( where \"waOriginType\" = 'authentication') * 460 as bill_authentication,\r\n       count(*) filter ( where \"waOriginType\" in ('user_initiated', 'service')) * 306 +\r\n       count(*) filter ( where \"waOriginType\" = 'marketing' ) * 657 +\r\n       count(*) filter ( where \"waOriginType\" = 'utility') * 321 +\r\n       count(*) filter ( where \"waOriginType\" = 'authentication') * 460 as total_bill\r\nfrom \"WhatsappConversation\"\r\nwhere \"channelId\" in (select \"id\" from \"Channel\" where \"workspaceId\" = 'template-workspace-name') and $__timeFilter(\"createdAt\")\r\n",
             "refId": "A",
             "sql": {
               "columns": [
@@ -429,7 +429,7 @@
             "editorMode": "code",
             "format": "table",
             "rawQuery": true,
-            "rawSql": "select date_trunc('day', \"createdAt\") as time,\r\n       count(*) filter ( where \"waOriginType\" in ('user_initiated', 'service')) * 270.48 +\r\n       count(*) filter ( where \"waOriginType\" = 'marketing' ) * 586.33 +\r\n       count(*) filter ( where \"waOriginType\" = 'utility') * 285.32 +\r\n       count(*) filter ( where \"waOriginType\" = 'authentication') * 427.97 as total_bill,\r\n       count(*) filter ( where \"waOriginType\" in ('user_initiated', 'service')) * 270.48 as bill_service,\r\n       count(*) filter ( where \"waOriginType\" = 'marketing' ) * 586.33 as bill_marketing,\r\n       count(*) filter ( where \"waOriginType\" = 'utility') * 285.32 as bill_utility,\r\n       count(*) filter ( where \"waOriginType\" = 'authentication') * 427.97 as bill_authentication\r\nfrom \"WhatsappConversation\"\r\nwhere \"channelId\" in (select \"id\" from \"Channel\" where \"workspaceId\" = 'workspace-1')\r\ngroup by 1\r\n",
+            "rawSql": "select date_trunc('day', \"createdAt\") as time,\r\n       count(*) filter ( where \"waOriginType\" in ('user_initiated', 'service')) * 270.48 +\r\n       count(*) filter ( where \"waOriginType\" = 'marketing' ) * 586.33 +\r\n       count(*) filter ( where \"waOriginType\" = 'utility') * 285.32 +\r\n       count(*) filter ( where \"waOriginType\" = 'authentication') * 427.97 as total_bill,\r\n       count(*) filter ( where \"waOriginType\" in ('user_initiated', 'service')) * 270.48 as bill_service,\r\n       count(*) filter ( where \"waOriginType\" = 'marketing' ) * 586.33 as bill_marketing,\r\n       count(*) filter ( where \"waOriginType\" = 'utility') * 285.32 as bill_utility,\r\n       count(*) filter ( where \"waOriginType\" = 'authentication') * 427.97 as bill_authentication\r\nfrom \"WhatsappConversation\"\r\nwhere \"channelId\" in (select \"id\" from \"Channel\" where \"workspaceId\" = 'template-workspace-name')\r\ngroup by 1\r\n",
             "refId": "A",
             "sql": {
               "columns": [
@@ -468,7 +468,7 @@
     },
     "timepicker": {},
     "timezone": "",
-    "title": "Workspace-1",
+    "title": "template-workspace-name",
     "uid": "NrJtxd_5k",
     "version": 11,
     "weekStart": ""
